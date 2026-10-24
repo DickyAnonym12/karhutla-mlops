@@ -1,0 +1,9 @@
+.git
+.env
+__pycache__/
+*.csv
+*.gpkg
+mlruns/
+mlartifacts/
+mlflow.db
+data/
