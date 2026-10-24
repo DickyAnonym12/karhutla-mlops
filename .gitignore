@@ -1,0 +1,14 @@
+.env
+venv/
+__pycache__/
+.ipynb_checkpoints/
+mlruns/
+mlartifacts/
+mlflow.db
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+model/*.joblib
+*.csv
+*.gpkg
