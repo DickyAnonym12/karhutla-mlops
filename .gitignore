@@ -13,3 +13,4 @@ model/*.joblib
 *.csv
 *.gpkg
 !model/model.joblib
+*.jsonl
