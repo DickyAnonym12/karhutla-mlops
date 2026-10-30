@@ -37,7 +37,7 @@ Format: {"intent": "risiko" atau "top" atau "lainnya", "kecamatan": teks atau nu
 - "lainnya": pertanyaan di luar topik"""
 
 SYS_JAWAB = """Kamu asisten untuk petugas BPBD. Tulis jawaban singkat (maksimal 3 kalimat) dalam bahasa Indonesia berdasarkan DATA.
-Aturan: gunakan HANYA nama dan angka yang ada di DATA, tulis angka persis seperti di DATA; jangan menambah angka, prediksi, atau saran tindakan lapangan; sebut tanggal data; gunakan istilah 'skor risiko' (bukan peluang kebakaran)."""
+Aturan: gunakan HANYA nama dan angka yang ada di DATA, tulis angka persis seperti di DATA; jangan menambah angka, prediksi, atau saran tindakan lapangan; untuk hotspot tulis jumlah titik dalam 7 hari terakhir persis seperti di DATA dan jangan menulis hotspot selama 7 hari; sebut tanggal data; gunakan istilah 'skor risiko' (bukan peluang kebakaran)."""
 
 
 def tanya_llm(messages, max_tokens=300):
@@ -115,7 +115,7 @@ def angka(s):
 def teks_baris(r):
     return (f"{r.kecamatan} ({r.kabupaten}): skor risiko {r.skor:.3f}, level {r.level}, "
             f"hujan 7 hari {r.rain_7d:.1f} mm, hujan 30 hari {r.rain_30d:.1f} mm, "
-            f"hotspot 7 hari {int(r.hotspot_7d)}")
+            f"jumlah titik hotspot dalam 7 hari terakhir: {int(r.hotspot_7d)}")
 
 
 def kartu(rows):
@@ -235,8 +235,7 @@ def chat(req: Chat):
         ringkas = f"Kabupaten {kab}: {len(hasil)} kecamatan, TINGGI {a}, SEDANG {b}, RENDAH {d}. Lima skor tertinggi:"
         cad = (f"Per {TANGGAL}, di Kabupaten {kab}: {a} kecamatan TINGGI, {b} SEDANG, {d} RENDAH. "
                f"Tertinggi: {r.kecamatan} ({r.skor:.3f}).")
-        teks, sumber = jawab(pesan, sub, ringkas, cad)
-        return selesai(pesan, teks, sumber, sub)
+        return selesai(pesan, cad, "templat", sub)
 
     return selesai(pesan, "Saya hanya menjawab risiko karhutla di Riau. Coba tanya: 'risiko di Minas' "
                    "atau '5 kecamatan paling berisiko'.", "tetap")
